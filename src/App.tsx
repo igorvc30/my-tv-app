@@ -1,9 +1,10 @@
+import MoviesPage from "./pages/movies";
 import "./App.scss";
 
 function App() {
   return (
     <>
-      <h1>My TV App</h1>
+      <MoviesPage />
     </>
   );
 }
