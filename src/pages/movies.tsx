@@ -12,7 +12,7 @@ const Background = styled.div`
   background-attachment: fixed; /* Keeps the image fixed while content scrolls (optional) */
   margin: 0; /* Removes default body margin */
   padding: 0; /* Removes default body padding */
-  height: 80vh; /* Ensures the body takes up the full viewport height */
+  height: 65vh; /* Ensures the body takes up the full viewport height */
   width: 100vw; /* Ensures the body takes up the full viewport width */
   box-shadow: inset 20vw 200px 50px rgba(1, 1, 1, 0.5);
 `;
@@ -36,12 +36,12 @@ const Heading = styled.span`
 
 const SideBar = styled.div`
   background: rgba(1, 1, 1, 0.5);
-  width: 25vw;
+  width: 30vw;
   display: flex;
 `;
 
 const Footer = styled.div`
-  height: 20vh;
+  height: 35vh;
   background: #0f1316;
   padding-left: 5rem;
   padding-top: 2rem;
