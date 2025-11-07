@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
-import Tabs from "../components/Tabs";
+import MoviesTabs from "../components/MoviesTabs";
+import EpisodesTabs from "../components/EpisodesTabs";
 
 const Background = styled.div`
   display: flex;
@@ -36,7 +37,9 @@ const Heading = styled.span`
 
 const SideBar = styled.div`
   background: rgba(1, 1, 1, 0.5);
-  width: 30vw;
+  /* max-width: 25vw;
+  min-width: 25vw; */
+  width: 300;
   display: flex;
 `;
 
@@ -56,11 +59,11 @@ export default function MoviesPage() {
           <Heading>80% INDICADO / CIENCIA FICCION / 2015 / EUA / 14</Heading>
         </Header>
         <SideBar>
-          <h1>SIDE BAR</h1>
+          <EpisodesTabs />
         </SideBar>
       </Background>
       <Footer>
-        <Tabs />
+        <MoviesTabs />
       </Footer>
     </>
   );

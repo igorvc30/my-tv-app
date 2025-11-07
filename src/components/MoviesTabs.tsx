@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Tabs, Tab, Box } from "@mui/material";
-import MobileDescription from "../components/MovieDescription";
+import MobileDescription from "./MovieDescription";
 import styled from "@emotion/styled";
 import CastCard from "./CastCard";
 
@@ -69,7 +69,7 @@ function a11yProps(index: number) {
   };
 }
 
-export default function BasicTabs() {
+export default function MoviesTabs() {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
