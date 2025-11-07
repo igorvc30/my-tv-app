@@ -37,9 +37,7 @@ const Heading = styled.span`
 
 const SideBar = styled.div`
   background: rgba(1, 1, 1, 0.5);
-  /* max-width: 25vw;
-  min-width: 25vw; */
-  width: 300;
+  width: 25vw;
   display: flex;
 `;
 

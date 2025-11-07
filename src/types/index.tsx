@@ -9,8 +9,25 @@ export type Episode = {
 };
 
 export type Movie = {
+  Cast: Array<{
+    ID: string;
+    Name: string;
+  }>;
+  Genres: Array<{
+    ID: string;
+    Title: string;
+  }>;
+  ID: number;
+  Images: {
+    Background: string;
+  };
+  Synopsis: string;
   Title: string;
-  Year: string;
+  Year: number;
+};
+
+interface Extra_Movie extends Movie {
+  Title: string;
   Rated: string;
   Released: string;
   Runtime: string;
@@ -31,7 +48,7 @@ export type Movie = {
   Type: string;
   totalSeasons: string;
   Response: string;
-};
+}
 
 type Rating = {
   Source: string;
@@ -43,6 +60,6 @@ type Casting = {
   character: string;
 };
 
-export interface Movie_Extended extends Movie {
+export interface Movie_Experimental extends Extra_Movie {
   cast: Array<Casting>;
 }

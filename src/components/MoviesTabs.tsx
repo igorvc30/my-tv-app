@@ -3,6 +3,7 @@ import { Tabs, Tab, Box } from "@mui/material";
 import MobileDescription from "./MovieDescription";
 import styled from "@emotion/styled";
 import CastCard from "./CastCard";
+import { CAST } from "../mocks";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -117,43 +118,17 @@ export default function MoviesTabs() {
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         <StyledCastContainer>
-          {cast.map((c) => (
+          {/* TODO: REMOVE */}
+          {CAST.map((c) => (
             <CastCard actor={c.actor} character={c.character} />
           ))}
         </StyledCastContainer>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-        Item Three Item Three Item Three Item Three Item Three Item Three Item
-        Three Item Three Item Three Item Three Item Three Item Three Item Three
-        Item Three Item Three Item Three Item Three Item Three Item Three
+        <h2>
+          Nominated for 13 Primetime Emmys. 17 wins & 93 nominations total
+        </h2>
       </CustomTabPanel>
     </Box>
   );
 }
-
-const cast = [
-  {
-    actor: "Reeve Carney",
-    character: "Dorian Gray",
-  },
-  {
-    actor: "Timothy Dalton",
-    character: "Sir Malcolm Murray",
-  },
-  {
-    actor: "Eva Green",
-    character: "Vanessa Ives",
-  },
-  {
-    actor: "Rory Kinnear",
-    character: "John Clare",
-  },
-  {
-    actor: "Billie Piper",
-    character: "Lily",
-  },
-  {
-    actor: "Harry Treadaway",
-    character: "Dr. Victor Frankenstein",
-  },
-];
