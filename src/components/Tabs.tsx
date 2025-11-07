@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Tabs, Tab, Box } from "@mui/material";
-
+import MobileDescription from "../components/MovieDescription";
 import styled from "@emotion/styled";
 
 interface TabPanelProps {
@@ -105,9 +105,7 @@ export default function BasicTabs() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        Contos de personagens clássicos como Drácula, Frankenstein e Dorian Gray
-        estão reunidos nesta série de terror ambientada nas ruas da Londres
-        vitoriana.
+        <MobileDescription sinopse="..." />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         Item Two Item Two Item Two Item Two Item Two Item Two Item Two
