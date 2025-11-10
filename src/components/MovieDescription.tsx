@@ -9,7 +9,7 @@ import IconButton from "../components/IconButton";
 import styled from "@emotion/styled";
 
 type Props = {
-  sinopse: string;
+  synopsis: string;
 };
 
 const RowContainer = styled.div`
@@ -17,7 +17,7 @@ const RowContainer = styled.div`
   flex-direction: row;
 `;
 
-export default function MobileDescription({ sinopse }: Props) {
+export default function MobileDescription({ synopsis }: Props) {
   return (
     <RowContainer>
       <RowContainer>
@@ -28,11 +28,7 @@ export default function MobileDescription({ sinopse }: Props) {
       </RowContainer>
       <div style={{ marginLeft: "1rem" }}>
         <p style={{ fontSize: "1.8rem" }}>SINOPSE</p>
-        <span style={{ fontSize: "1.4rem" }}>
-          Contos de personagens clássicos como Drácula, Frankenstein e Dorian
-          Gray estão reunidos nesta série de terror ambientada nas ruas da
-          Londres vitoriana.
-        </span>
+        <span style={{ fontSize: "1.4rem" }}>{synopsis}</span>
       </div>
     </RowContainer>
   );

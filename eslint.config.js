@@ -5,6 +5,7 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
 import prettier from "eslint-config-prettier";
 import { defineConfig, globalIgnores } from "eslint/config";
+import pluginQuery from "@tanstack/eslint-plugin-query";
 
 /** @type {import('eslint').Linter.Config[]} */
 export default defineConfig([
@@ -23,4 +24,5 @@ export default defineConfig([
     },
   },
   prettier,
+  ...pluginQuery.configs["flat/recommended"],
 ]);

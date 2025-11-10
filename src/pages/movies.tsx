@@ -1,6 +1,14 @@
 import styled from "@emotion/styled";
+import { Activity } from "react";
+import CircularProgress from "@mui/material/CircularProgress";
 import MoviesTabs from "../components/MoviesTabs";
 import EpisodesTabs from "../components/EpisodesTabs";
+import { useQuery } from "@tanstack/react-query";
+
+import getEpisodes from "../api/getEpisodes";
+import getMovie from "../api/getMovie";
+import { ADDITIONAL_DATA, CAST } from "../mocks";
+import type { Episode, Movie_Experimental } from "../types";
 
 const Background = styled.div`
   display: flex;
@@ -49,19 +57,51 @@ const Footer = styled.div`
 `;
 
 export default function MoviesPage() {
+  const { data: episodesData } = useQuery<Array<Episode>>({
+    queryKey: ["getEpisodes"],
+    queryFn: getEpisodes,
+    select: (data) => data.filter(Boolean), // Transforms titles to uppercase
+  });
+
+  const { data: movieData, isLoading: loadingMovie } =
+    useQuery<Movie_Experimental>({
+      queryKey: ["getMovie"],
+      queryFn: getMovie,
+      select: (data) => {
+        const result = {
+          ...data,
+          ...ADDITIONAL_DATA,
+          cast: CAST,
+          formattedGenres: data.Genres.map((item) => item.Title)
+            .join(" ")
+            .toUpperCase(),
+          formattedRating: ADDITIONAL_DATA.imdbRating
+            .replace(".", "")
+            .concat("%"),
+        };
+        return result;
+      }, // Transforms titles to uppercase
+    });
+
+  if (loadingMovie || !movieData) {
+    return <CircularProgress />;
+  }
+
   return (
     <>
       <Background>
         <Header>
-          <Title>Penny Dreadful</Title>
-          <Heading>80% INDICADO / CIENCIA FICCION / 2015 / EUA / 14</Heading>
+          <Title>{movieData?.Title}</Title>
+          <Heading>{`${movieData?.formattedRating} INDICADO / ${movieData?.formattedGenres} / ${movieData?.Year} / ${movieData?.countryISO} / ${movieData?.Rated}`}</Heading>
         </Header>
-        <SideBar>
-          <EpisodesTabs />
-        </SideBar>
+        <Activity mode={episodesData ? "visible" : "hidden"}>
+          <SideBar>
+            <EpisodesTabs episodes={episodesData} />
+          </SideBar>
+        </Activity>
       </Background>
       <Footer>
-        <MoviesTabs />
+        <MoviesTabs synopsis={movieData?.Synopsis} />
       </Footer>
     </>
   );

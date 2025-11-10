@@ -62,4 +62,7 @@ type Casting = {
 
 export interface Movie_Experimental extends Extra_Movie {
   cast: Array<Casting>;
+  formattedGenres: string;
+  formattedRating: string;
+  countryISO: string;
 }

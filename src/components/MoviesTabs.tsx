@@ -70,10 +70,14 @@ function a11yProps(index: number) {
   };
 }
 
-export default function MoviesTabs() {
+type Props = {
+  synopsis: string;
+};
+
+export default function MoviesTabs({ synopsis }: Props) {
   const [value, setValue] = React.useState(0);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleChange = (_: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
@@ -110,11 +114,11 @@ export default function MoviesTabs() {
             label="Principales Premios"
             {...a11yProps(2)}
           />
-          <StyledImg src="/public/telecine.svg" />
+          <StyledImg src="/telecine.svg" />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <MobileDescription sinopse="..." />
+        <MobileDescription synopsis={synopsis} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         <StyledCastContainer>

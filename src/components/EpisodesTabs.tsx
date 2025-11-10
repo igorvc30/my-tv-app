@@ -1,40 +1,39 @@
 import * as React from "react";
 import { Tabs, Tab, Box } from "@mui/material";
 import styled from "@emotion/styled";
-import { NestedList } from "../components/EpisodeListItem";
+import List from "@mui/material/List";
+
+import type { Episode } from "../types";
+import { useMemo } from "react";
+import EpisodeListItem from "./EpisodeListItem";
 
 interface TabPanelProps {
   children?: React.ReactNode;
-  index: number;
-  value: number;
 }
 
 function CustomTabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
+  const { children, ...other } = props;
 
   return (
     <div
       role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
+      id="episodes-list"
+      aria-labelledby="episodes-list"
       style={{
         display: "flex",
         maxHeight: "90%",
       }}
       {...other}
     >
-      {value === index && (
-        <Box
-          sx={{
-            p: 2,
-            flexGrow: 1,
-            overflowY: "auto",
-          }}
-        >
-          {children}
-        </Box>
-      )}
+      <Box
+        sx={{
+          p: 2,
+          flexGrow: 1,
+          overflowY: "auto",
+        }}
+      >
+        {children}
+      </Box>
     </div>
   );
 }
@@ -63,18 +62,33 @@ const StyledTab = styled(Tab)(() => ({
 
 function a11yProps(index: number) {
   return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
+    id: `season-tab-${index}`,
+    "aria-controls": `season-tabpanel-${index}`,
   };
 }
 
-export default function EpisodesTabs() {
+type Props = {
+  episodes: Array<Episode>;
+};
+
+export default function EpisodesTabs({ episodes }: Props) {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
     console.log("handleChange ... ", newValue);
   };
+
+  const filteredList = useMemo(() => {
+    if (!episodes) {
+      return [];
+    }
+    const filteredEpisodes = episodes?.filter(
+      (item) => item.SeasonNumber === value + 1,
+    );
+
+    return filteredEpisodes;
+  }, [value, episodes]);
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -103,14 +117,12 @@ export default function EpisodesTabs() {
           />
         </Tabs>
       </Box>
-      <CustomTabPanel value={value} index={0}>
-        <NestedList />
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
-        <NestedList />
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={2}>
-        <NestedList />
+      <CustomTabPanel>
+        <List component="nav" aria-labelledby="nested-list-subheader">
+          {filteredList.map((item) => (
+            <EpisodeListItem {...item} />
+          ))}
+        </List>
       </CustomTabPanel>
     </Box>
   );
