@@ -68,7 +68,7 @@ function a11yProps(index: number) {
 }
 
 type Props = {
-  episodes: Array<Episode>;
+  episodes?: Array<Episode>;
 };
 
 export default function EpisodesTabs({ episodes }: Props) {
@@ -119,9 +119,11 @@ export default function EpisodesTabs({ episodes }: Props) {
       </Box>
       <CustomTabPanel>
         <List component="nav" aria-labelledby="nested-list-subheader">
-          {filteredList.map((item) => (
-            <EpisodeListItem {...item} />
-          ))}
+          {filteredList.length ? (
+            filteredList.map((item) => <EpisodeListItem {...item} />)
+          ) : (
+            <h2 style={{ color: "white" }}>Temporada indisponível</h2>
+          )}
         </List>
       </CustomTabPanel>
     </Box>
