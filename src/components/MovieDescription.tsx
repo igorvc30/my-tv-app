@@ -17,15 +17,23 @@ const RowContainer = styled.div`
   flex-direction: row;
 `;
 
-export default function MobileDescription({ synopsis }: Props) {
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  @media (max-width: 720px) {
+    flex-direction: column;
+  }
+`;
+
+export default function MovieDescription({ synopsis }: Props) {
   return (
     <RowContainer>
-      <RowContainer>
+      <ButtonContainer>
         <IconButton Icon={Add} label="Mi Lista" />
         <IconButton Icon={ThumbsUpDownOutlined} label="Evaluar" />
         <IconButton Icon={FiberManualRecord} label="Grabar" />
         <IconButton Icon={IosShare} label="Compartir" />
-      </RowContainer>
+      </ButtonContainer>
       <div style={{ marginLeft: "1rem" }}>
         <p style={{ fontSize: "1.8rem" }}>SINOPSE</p>
         <span style={{ fontSize: "1.4rem" }}>{synopsis}</span>

@@ -1,6 +1,9 @@
 import styled from "@emotion/styled";
-import { Activity } from "react";
+import { Activity, useState } from "react";
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import { IconButton } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
+import { Close, Reorder } from "@mui/icons-material";
 import MoviesTabs from "../components/MoviesTabs";
 import EpisodesTabs from "../components/EpisodesTabs";
 import { useQuery } from "@tanstack/react-query";
@@ -9,6 +12,7 @@ import getEpisodes from "../api/getEpisodes";
 import getMovie from "../api/getMovie";
 import { ADDITIONAL_DATA, CAST } from "../mocks";
 import type { Episode, Movie_Experimental } from "../types";
+import React from "react";
 
 const Background = styled.div`
   display: flex;
@@ -21,21 +25,31 @@ const Background = styled.div`
   background-attachment: fixed; /* Keeps the image fixed while content scrolls (optional) */
   margin: 0; /* Removes default body margin */
   padding: 0; /* Removes default body padding */
-  height: 65vh; /* Ensures the body takes up the full viewport height */
+  min-height: 65vh; /* Ensures the body takes up the full viewport height */
   width: 100vw; /* Ensures the body takes up the full viewport width */
   box-shadow: inset 20vw 200px 50px rgba(1, 1, 1, 0.5);
 `;
 
 const Header = styled.div`
-  align-self: flex-start;
-  flex-direction: column;
+  display: flex;
+  flex-grow: 1;
+  align-items: flex-start;
+  flex-direction: row;
+  justify-content: space-between;
   margin-top: 2rem;
   margin-left: 5rem;
+
+  @media (max-width: 720px) {
+    margin-left: 2rem;
+  }
 `;
 
 const Title = styled.h1`
   font-weight: bold;
   font-size: 6rem;
+  @media (max-width: 720px) {
+    font-size: 4rem;
+  }
 `;
 
 const Heading = styled.span`
@@ -43,20 +57,19 @@ const Heading = styled.span`
   opacity: 0.5;
 `;
 
-const SideBar = styled.div`
-  background: rgba(1, 1, 1, 0.5);
-  width: 25vw;
-  display: flex;
-`;
-
 const Footer = styled.div`
-  height: 35vh;
+  min-height: 35vh;
   background: #0f1316;
   padding-left: 5rem;
   padding-top: 2rem;
+  @media (max-width: 720px) {
+    padding-left: 2rem;
+  }
 `;
 
 export default function MoviesPage() {
+  const [showEpisodes, setShowEpisodes] = useState(false);
+
   const { data: episodesData } = useQuery<Array<Episode>>({
     queryKey: ["getEpisodes"],
     queryFn: getEpisodes,
@@ -87,18 +100,62 @@ export default function MoviesPage() {
     return <CircularProgress />;
   }
 
+  const toggleDrawer =
+    () => (event: React.KeyboardEvent | React.MouseEvent) => {
+      if (
+        event &&
+        event.type === "keydown" &&
+        ((event as React.KeyboardEvent).key === "Tab" ||
+          (event as React.KeyboardEvent).key === "Shift")
+      ) {
+        return;
+      }
+
+      setShowEpisodes((prevState) => !prevState);
+    };
+
   return (
     <>
+      <React.Fragment key={"right"}>
+        <SwipeableDrawer
+          slotProps={{
+            paper: {
+              style: {
+                background: "rgba(1, 1, 1, 0.5)",
+                width: 400,
+                paddingTop: "2rem",
+              },
+            },
+            backdrop: {
+              style: { background: "transparent", width: 400 },
+            },
+          }}
+          anchor={"right"}
+          open={showEpisodes}
+          onClose={toggleDrawer()}
+          onOpen={toggleDrawer()}
+        >
+          <IconButton
+            onClick={toggleDrawer()}
+            sx={{ alignSelf: "flex-end", marginBottom: "4rem" }}
+          >
+            <Close sx={{ fontSize: 32, color: "white" }} />
+          </IconButton>
+          <EpisodesTabs episodes={episodesData} />
+        </SwipeableDrawer>
+      </React.Fragment>
       <Background>
         <Header>
-          <Title>{movieData?.Title}</Title>
-          <Heading>{`${movieData?.formattedRating} INDICADO / ${movieData?.formattedGenres} / ${movieData?.Year} / ${movieData?.countryISO} / ${movieData?.Rated}`}</Heading>
+          <div>
+            <Title>{movieData?.Title}</Title>
+            <Heading>{`${movieData?.formattedRating} INDICADO / ${movieData?.formattedGenres} / ${movieData?.Year} / ${movieData?.countryISO} / ${movieData?.Rated}`}</Heading>
+          </div>
+          <Activity mode={showEpisodes ? "hidden" : "visible"}>
+            <IconButton onClick={toggleDrawer()}>
+              <Reorder sx={{ fontSize: 32, color: "white" }} />
+            </IconButton>
+          </Activity>
         </Header>
-        <Activity mode={episodesData ? "visible" : "hidden"}>
-          <SideBar>
-            <EpisodesTabs episodes={episodesData} />
-          </SideBar>
-        </Activity>
       </Background>
       <Footer>
         <MoviesTabs synopsis={movieData?.Synopsis} />
