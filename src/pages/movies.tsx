@@ -1,11 +1,11 @@
 import styled from "@emotion/styled";
-import { Activity, useState } from "react";
+import { Activity, useEffect, useState } from "react";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import { IconButton } from "@mui/material";
-import CircularProgress from "@mui/material/CircularProgress";
 import { Close, Reorder } from "@mui/icons-material";
 import MoviesTabs from "../components/MoviesTabs";
 import EpisodesTabs from "../components/EpisodesTabs";
+import Loading from "../components/Loading";
 import { useQuery } from "@tanstack/react-query";
 
 import getEpisodes from "../api/getEpisodes";
@@ -14,11 +14,16 @@ import { ADDITIONAL_DATA, CAST } from "../mocks";
 import type { Episode, Movie_Experimental } from "../types";
 import React from "react";
 
+type BackgroundProps = {
+  image?: string;
+};
+
 const Background = styled.div`
   display: flex;
   flex: 1;
   justify-content: space-between;
-  background-image: url("https://cineset.com.br/wp-content/uploads/2015/07/unnamed1.jpg");
+  background-image:
+    url(${(props: BackgroundProps) => props?.image}), url("./placeholder.jpg");
   background-size: cover; /* Ensures the image covers the entire area, maintaining aspect ratio */
   background-position: center; /* Centers the image within the viewport */
   background-repeat: no-repeat; /* Prevents the image from repeating */
@@ -76,29 +81,24 @@ export default function MoviesPage() {
     select: (data) => data.filter(Boolean), // Transforms titles to uppercase
   });
 
-  const { data: movieData, isLoading: loadingMovie } =
-    useQuery<Movie_Experimental>({
-      queryKey: ["getMovie"],
-      queryFn: getMovie,
-      select: (data) => {
-        const result = {
-          ...data,
-          ...ADDITIONAL_DATA,
-          cast: CAST,
-          formattedGenres: data.Genres.map((item) => item.Title)
-            .join(" ")
-            .toUpperCase(),
-          formattedRating: ADDITIONAL_DATA.imdbRating
-            .replace(".", "")
-            .concat("%"),
-        };
-        return result;
-      }, // Transforms titles to uppercase
-    });
-
-  if (loadingMovie || !movieData) {
-    return <CircularProgress />;
-  }
+  const { data: movieData } = useQuery<Movie_Experimental>({
+    queryKey: ["getMovie"],
+    queryFn: getMovie,
+    select: (data) => {
+      const result = {
+        ...data,
+        ...ADDITIONAL_DATA,
+        cast: CAST,
+        formattedGenres: data.Genres.map((item) => item.Title)
+          .join(" ")
+          .toUpperCase(),
+        formattedRating: ADDITIONAL_DATA.imdbRating
+          .replace(".", "")
+          .concat("%"),
+      };
+      return result;
+    }, // Transforms titles to uppercase
+  });
 
   const toggleDrawer =
     () => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -113,6 +113,12 @@ export default function MoviesPage() {
 
       setShowEpisodes((prevState) => !prevState);
     };
+
+  useEffect(() => {
+    if (episodesData) {
+      setShowEpisodes(true);
+    }
+  }, [episodesData]);
 
   return (
     <>
@@ -144,22 +150,29 @@ export default function MoviesPage() {
           <EpisodesTabs episodes={episodesData} />
         </SwipeableDrawer>
       </React.Fragment>
-      <Background>
-        <Header>
-          <div>
-            <Title>{movieData?.Title}</Title>
-            <Heading>{`${movieData?.formattedRating} INDICADO / ${movieData?.formattedGenres} / ${movieData?.Year} / ${movieData?.countryISO} / ${movieData?.Rated}`}</Heading>
-          </div>
-          <Activity mode={showEpisodes ? "hidden" : "visible"}>
-            <IconButton onClick={toggleDrawer()}>
-              <Reorder sx={{ fontSize: 32, color: "white" }} />
-            </IconButton>
-          </Activity>
-        </Header>
+      <Background image={movieData?.Images?.Background}>
+        {movieData ? (
+          <Header>
+            <div>
+              <Title>{movieData?.Title}</Title>
+              <Heading>{`${movieData?.formattedRating} INDICADO / ${movieData?.formattedGenres} / ${movieData?.Year} / ${movieData?.countryISO} / ${movieData?.Rated}`}</Heading>
+            </div>
+
+            <Activity mode={showEpisodes ? "hidden" : "visible"}>
+              <IconButton onClick={toggleDrawer()}>
+                <Reorder sx={{ fontSize: 32, color: "white" }} />
+              </IconButton>
+            </Activity>
+          </Header>
+        ) : (
+          <Loading />
+        )}
       </Background>
-      <Footer>
-        <MoviesTabs synopsis={movieData?.Synopsis} />
-      </Footer>
+      {movieData && (
+        <Footer>
+          <MoviesTabs synopsis={movieData?.Synopsis} />
+        </Footer>
+      )}
     </>
   );
 }

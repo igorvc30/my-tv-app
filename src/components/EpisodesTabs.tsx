@@ -76,7 +76,6 @@ export default function EpisodesTabs({ episodes }: Props) {
 
   const handleChange = (_: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
-    console.log("handleChange ... ", newValue);
   };
 
   const filteredList = useMemo(() => {

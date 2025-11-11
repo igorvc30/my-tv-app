@@ -114,7 +114,7 @@ export default function MoviesTabs({ synopsis }: Props) {
             label="Principales Premios"
             {...a11yProps(2)}
           />
-          <StyledImg src="/telecine.svg" />
+          <StyledImg src="./telecine.svg" />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>

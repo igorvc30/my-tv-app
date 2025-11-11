@@ -54,4 +54,8 @@ export const ADDITIONAL_DATA = {
   totalSeasons: "3",
   countryISO: "USA",
   Response: "True",
+  Images: {
+    Background:
+      "https://cineset.com.br/wp-content/uploads/2015/07/unnamed1.jpg",
+  },
 };

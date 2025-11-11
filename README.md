@@ -1,4 +1,4 @@
-# My TV
+# My TV App
 
 ## This project is using
 
@@ -14,3 +14,7 @@ Use the following commands
 
 1. `npm install`
 2. `npm run dev`
+
+## How to deploy
+
+1. `npm run deploy`
