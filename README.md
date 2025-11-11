@@ -1,5 +1,7 @@
 # My TV App
 
+Preview Page: https://igorvc30.github.io/my-tv-app/
+
 ## This project is using
 
 1. React + TypeScript
