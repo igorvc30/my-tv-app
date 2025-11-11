@@ -1,5 +1,6 @@
 {
   "name": "my-tv-app",
+  "homepage": "https://igorvc30.github.io/my-tv-app/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -8,7 +9,9 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "format": "prettier --write \"src/**/*.{js,jsx,css,html,tsx,ts,scss }\""
+    "format": "prettier --write \"src/**/*.{js,jsx,css,html,tsx,ts,scss }\"",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -17,6 +20,7 @@
     "@mui/material": "^7.3.5",
     "@tanstack/react-query": "^5.90.7",
     "@tanstack/react-query-devtools": "^5.90.2",
+    "gh-pages": "^6.3.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },
